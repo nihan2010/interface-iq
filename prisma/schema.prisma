@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model UiPost {
+  id          String   @id @default(uuid())
+  userId      String   // Links to Clerk authentication user ID
+  title       String
+  description String?
+  imageUrl    String
+
+  // Persisted AI Metrics
+  aiScore     Int?
+  aiReadiness Float?
+  aiTags      String[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  ratings     Rating[]
+}
+
+model Rating {
+  id        String   @id @default(uuid())
+  score     Int
+  feedback  String?
+  userId    String   // Links to Clerk user rating the post
+  createdAt DateTime @default(now())
+
+  postId    String
+  post      UiPost   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId]) // A user can only rate a specific post once!
+}
