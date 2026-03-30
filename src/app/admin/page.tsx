@@ -5,6 +5,7 @@ import { ShieldAlert, ShieldCheck, Clock, FileImage, LayoutList } from 'lucide-r
 import { Card } from '@/components/ui/Card';
 import { DeletePostButton } from './DeletePostButton';
 import Link from 'next/link';
+import type { UiPost } from '@prisma/client';
 
 export default async function AdminPage() {
   const isAdmin = await checkIsAdmin();
@@ -59,7 +60,7 @@ export default async function AdminPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50 bg-card">
-                {posts.map((post) => (
+                {posts.map((post: UiPost) => (
                   <tr key={post.id} className="hover:bg-muted/10 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="h-16 w-16 relative rounded-lg border border-border shadow-sm overflow-hidden bg-muted flex items-center justify-center group">
