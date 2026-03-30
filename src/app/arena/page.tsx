@@ -5,6 +5,7 @@ import { ShareButton } from '@/components/ShareButton';
 import { Star, MessageSquare, TrendingUp, ThumbsUp } from 'lucide-react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import type { UiPost, Rating } from '@prisma/client';
 
 export const metadata: Metadata = {
   title: 'UI Arena — Community Design Ratings',
@@ -60,7 +61,7 @@ export default async function ArenaPage() {
         </div>
       ) : (
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-          {posts.map((post) => {
+          {posts.map((post: UiPost & { ratings: { score: number }[], _count: { ratings: number } }) => {
             const avgRating = post.ratings.length > 0
               ? (post.ratings.reduce((a, r) => a + r.score, 0) / post.ratings.length).toFixed(1)
               : null;

@@ -7,6 +7,7 @@ import { ShareButton } from '@/components/ShareButton';
 import { ArrowLeft, Star, TrendingUp, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import type { Rating } from '@prisma/client';
 
 interface PostPageProps {
   params: Promise<{ id: string }>;
@@ -192,7 +193,7 @@ export default async function PostPage({ params }: PostPageProps) {
                 <MessageSquare className="h-3.5 w-3.5" /> Community Suggestions ({post.ratings.filter(r => r.feedback).length})
               </p>
               <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1">
-                {post.ratings.filter((r) => r.feedback).map((r) => (
+                {post.ratings.filter((r) => r.feedback).map((r: Rating) => (
                   <div key={r.id} className="rounded-xl bg-secondary/40 border border-border/60 p-4">
                     <div className="flex justify-between items-center mb-2">
                       <div className="flex items-center gap-2">
