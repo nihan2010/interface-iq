@@ -1,6 +1,7 @@
 import { db } from '@/lib/db';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { ShareButton } from '@/components/ShareButton';
 import { Star, MessageSquare, TrendingUp, ThumbsUp } from 'lucide-react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
@@ -129,6 +130,16 @@ export default async function ArenaPage() {
                     </div>
                   </Card>
                 </Link>
+
+                {/* Share button — outside <Link> so it doesn't navigate */}
+                <div className="absolute bottom-[72px] right-3 z-10" onClick={(e) => e.preventDefault()}>
+                  <ShareButton
+                    postId={post.id}
+                    title={post.title}
+                    description={post.description}
+                    compact
+                  />
+                </div>
               </div>
             );
           })}

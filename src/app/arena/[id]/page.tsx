@@ -3,14 +3,16 @@ import { notFound } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { Badge } from '@/components/ui/Badge';
 import { SuggestionBox } from '@/components/SuggestionBox';
+import { ShareButton } from '@/components/ShareButton';
 import { ArrowLeft, Star, TrendingUp, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import Script from 'next/script';
 
 interface PostPageProps {
   params: Promise<{ id: string }>;
 }
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://interfaceiq.vercel.app';
 
 // ── Dynamic SEO per post ────────────────────────────────────────────────────
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
@@ -29,18 +31,31 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
     avgRating ? `Community Rating: ${avgRating}/10 from ${totalRatings} review${totalRatings !== 1 ? 's' : ''}.` : null,
   ].filter(Boolean).join(' ') || 'View and rate this UI design on Interface IQ.';
 
+  const postUrl = `${siteUrl}/arena/${id}`;
+
+  // Build OG image list — prefer the post's own screenshot, fallback to site OG
+  const ogImages = post.imageUrl
+    ? [{ url: post.imageUrl, width: 1200, height: 630, alt: post.title }]
+    : [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Interface IQ Arena' }];
+
   return {
     title: post.title,
     description,
+    alternates: { canonical: postUrl },
     openGraph: {
       title: `${post.title} | Interface IQ Arena`,
       description,
+      url: postUrl,
       type: 'article',
+      siteName: 'Interface IQ',
+      images: ogImages,
     },
     twitter: {
       card: 'summary_large_image',
       title: `${post.title} | Interface IQ Arena`,
       description,
+      images: [post.imageUrl ?? '/og-image.png'],
+      creator: '@nihannajeeb',
     },
   };
 }
@@ -91,7 +106,14 @@ export default async function PostPage({ params }: PostPageProps) {
         <div className="lg:col-span-2 space-y-6">
           {/* Title & Description */}
           <div>
-            <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight mb-2">{post.title}</h1>
+            <div className="flex items-start justify-between gap-3 mb-2">
+              <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight">{post.title}</h1>
+              <ShareButton
+                postId={post.id}
+                title={post.title}
+                description={post.description}
+              />
+            </div>
             {post.description && (
               <p className="text-muted-foreground leading-relaxed">{post.description}</p>
             )}
