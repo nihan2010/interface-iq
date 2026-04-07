@@ -61,6 +61,8 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   };
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function PostPage({ params }: PostPageProps) {
   const { id } = await params;
   const post = await getPostWithRatings(id);
