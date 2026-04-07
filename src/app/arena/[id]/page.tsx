@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   // Build OG image list — prefer the post's own screenshot, fallback to site OG
   const ogImages = post.imageUrl
     ? [{ url: post.imageUrl, width: 1200, height: 630, alt: post.title }]
-    : [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Interface IQ Arena' }];
+    : [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630, alt: 'Interface IQ Arena' }];
 
   return {
     title: post.title,
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
       card: 'summary_large_image',
       title: `${post.title} | Interface IQ Arena`,
       description,
-      images: [post.imageUrl ?? '/og-image.png'],
+      images: [post.imageUrl ?? `${siteUrl}/og-image.png`],
       creator: '@nihannajeeb',
     },
   };
@@ -88,7 +88,8 @@ export default async function PostPage({ params }: PostPageProps) {
       {/* Back button */}
       <Link href="/arena" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm font-medium mb-8 group transition-colors">
         <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-        Back to Arena
+        Back to Arena 
+        
       </Link>
 
       <div className="grid lg:grid-cols-5 gap-8">

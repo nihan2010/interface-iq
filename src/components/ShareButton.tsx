@@ -78,7 +78,11 @@ export function ShareButton({ postId, title, description, compact = false }: Sha
     <div className="relative">
       {/* Main share button */}
       <button
-        onClick={handleNativeShare}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleNativeShare();
+        }}
         className={
           compact
             ? "flex items-center justify-center h-8 w-8 rounded-lg bg-background/80 backdrop-blur-sm border border-border/60 shadow hover:bg-background hover:scale-110 transition-all duration-200 opacity-0 group-hover:opacity-100"

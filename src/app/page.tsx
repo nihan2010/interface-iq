@@ -4,6 +4,7 @@ import * as React from 'react';
 import { UploadArea } from '@/components/UploadArea';
 import { AnalysisResult } from '@/components/AnalysisResult';
 import { analyzeUI } from '@/lib/ai-analyzer';
+import { checkDomainIsAlive } from '@/actions/check-domain';
 import { useVibeStore } from '@/store/useVibeStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Input } from '@/components/ui/Input';
@@ -14,10 +15,33 @@ export default function Home() {
   const { activeAnalysis, setActiveAnalysis, addToHistory, loadHistory } = useVibeStore();
   const [isAnalyzing, setIsAnalyzing] = React.useState(false);
   const [mode, setMode] = React.useState<'NORMAL' | 'ROAST' | 'FIX'>('NORMAL');
+  const [urlInput, setUrlInput] = React.useState('');
+  const [urlError, setUrlError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     loadHistory();
   }, [loadHistory]);
+
+  const handleAnalyzeUrl = async () => {
+    if (!urlInput.trim()) return;
+    
+    setUrlError(null);
+    setIsAnalyzing(true);
+    
+    const res = await checkDomainIsAlive(urlInput);
+    if (!res.alive) {
+      setUrlError(res.error || 'Website unreachable');
+      setIsAnalyzing(false);
+      return;
+    }
+
+    // Since it's alive, we can generate a dynamic screenshot of the website!
+    // using a free screenshot API for the analysis feed.
+    const cleanUrl = res.url?.replace(/^https?:\/\//i, '') || urlInput;
+    const screenshotUrl = `https://image.thum.io/get/width/1200/crop/800/${res.url}`;
+    
+    await handleUpload(screenshotUrl);
+  };
 
   const handleUpload = async (fileUrl: string) => {
     setIsAnalyzing(true);
@@ -80,17 +104,34 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-2 p-1.5 bg-muted/30 border border-border shadow-sm rounded-xl transition-all focus-within:ring-2 ring-ring">
-              <div className="relative flex-1 w-full">
-                <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  placeholder="Paste URL to analyze (Mocked UI)" 
-                  className="pl-9 h-11 border-0 bg-transparent shadow-none focus-visible:ring-0 text-base flex-1 w-full"
-                />
+            <div className="flex flex-col space-y-2 w-full">
+              <div className="flex flex-col sm:flex-row gap-2 p-1.5 bg-muted/30 border border-border shadow-sm rounded-xl transition-all focus-within:ring-2 ring-ring relative">
+                 <div className="relative flex-1 w-full flex items-center">
+                   <LinkIcon className="absolute left-3 h-4 w-4 text-muted-foreground z-10" />
+                   <Input 
+                     placeholder="Paste URL to analyze (e.g. apple.com)" 
+                     className="pl-9 h-11 border-0 bg-transparent shadow-none focus-visible:ring-0 text-base flex-1 w-full"
+                     value={urlInput}
+                     onChange={(e) => {
+                       setUrlInput(e.target.value);
+                       setUrlError(null);
+                     }}
+                     onKeyDown={(e) => {
+                       if (e.key === 'Enter') handleAnalyzeUrl();
+                     }}
+                   />
+                 </div>
+                 <Button 
+                   onClick={handleAnalyzeUrl} 
+                   className="h-11 px-6 w-full sm:w-auto gap-2 shrink-0 font-semibold rounded-lg shadow-md transition-all"
+                   disabled={!urlInput.trim() || isAnalyzing}
+                 >
+                   Analyze <ArrowRight className="h-4 w-4" />
+                 </Button>
               </div>
-              <Button onClick={() => handleUpload("https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&q=80&w=1000")} className="h-11 px-6 w-full sm:w-auto gap-2 shrink-0 font-semibold rounded-lg shadow-md transition-all">
-                Analyze <ArrowRight className="h-4 w-4" />
-              </Button>
+              {urlError && (
+                 <p className="text-sm font-semibold text-red-500 text-center animate-in fade-in slide-in-from-top-1">{urlError}</p>
+              )}
             </div>
           </motion.div>
         )}

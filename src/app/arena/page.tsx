@@ -7,6 +7,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import type { UiPost, Rating } from '@prisma/client';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://interfaceiq.vercel.app';
+
 export const metadata: Metadata = {
   title: 'UI Arena — Community Design Ratings',
   description:
@@ -15,14 +17,18 @@ export const metadata: Metadata = {
     title: 'UI Arena — Community Design Ratings | Interface IQ',
     description: 'Browse AI-analyzed UI designs. Rate them, leave suggestions, and discover the best interfaces from the community.',
     type: 'website',
+    images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630, alt: 'UI Arena' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'UI Arena — Community Design Ratings | Interface IQ',
     description: 'Browse, rate, and critique UI designs. AI-powered scores + community feedback.',
+    images: [`${siteUrl}/og-image.png`],
   },
 };
 
+
+export const dynamic = 'force-dynamic';
 
 export default async function ArenaPage() {
   const posts = await db.uiPost.findMany({
@@ -133,7 +139,7 @@ export default async function ArenaPage() {
                 </Link>
 
                 {/* Share button — outside <Link> so it doesn't navigate */}
-                <div className="absolute bottom-[72px] right-3 z-10" onClick={(e) => e.preventDefault()}>
+                <div className="absolute bottom-[72px] right-3 z-10">
                   <ShareButton
                     postId={post.id}
                     title={post.title}

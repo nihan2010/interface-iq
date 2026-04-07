@@ -68,7 +68,7 @@ export const metadata: Metadata = {
       'Get instant AI analysis on any UI design. Rate, critique, and improve interfaces in the Arena. Free tool by Nihan Najeeb.',
     images: [
       {
-        url: '/og-image.png',
+        url: `${siteUrl}/og-image.png`,
         width: 1200,
         height: 630,
         alt: 'Interface IQ — AI-Powered UI Design Analyzer',
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
     title: 'Interface IQ — AI-Powered UI Design Analyzer',
     description:
       'Upload a UI screenshot → get instant AI scores on spacing, contrast, hierarchy & more. Join the Arena to rate other designs.',
-    images: ['/og-image.png'],
+    images: [`${siteUrl}/og-image.png`],
     creator: '@nihannajeeb',
   },
 
