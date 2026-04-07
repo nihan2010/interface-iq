@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     'Nihan Najeeb',
     'Interface IQ',
   ],
-  authors: [{ name: 'Nihan Najeeb', url: 'https://nihanajeeb.in' }],
+  authors: [{ name: 'Nihan Najeeb', url: 'https://nihannajeeb.in' }],
   creator: 'Nihan Najeeb',
   publisher: 'Interface IQ',
 

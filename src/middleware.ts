@@ -1,6 +1,11 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 
-export default clerkMiddleware();
+export default clerkMiddleware({
+  authorizedParties: [
+    'https://interfaceiq.vercel.app',
+    'http://localhost:3000'
+  ],
+});
 
 export const config = {
   matcher: [

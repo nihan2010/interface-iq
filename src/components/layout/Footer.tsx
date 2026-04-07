@@ -18,12 +18,12 @@ export function Footer() {
 
         {/* Right: Creator link */}
         <Link
-          href="https://nihanajeeb.in"
+          href="https://nihannajeeb.in"
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors underline underline-offset-4"
         >
-          nihanajeeb.in
+          nihannajeeb.in
         </Link>
       </div>
     </footer>
