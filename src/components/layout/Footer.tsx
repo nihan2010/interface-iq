@@ -6,9 +6,15 @@ export function Footer() {
     <footer className="w-full border-t border-border bg-background/95 backdrop-blur">
       <div className="container mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         {/* Left: Branding */}
-        <div className="flex items-center gap-2.5">
-          <Image src="/logo.png" alt="Interface IQ" width={22} height={22} className="rounded-md opacity-80" />
-          <span className="text-sm font-semibold text-muted-foreground tracking-tight">Interface IQ</span>
+        <div className="flex items-center gap-3">
+          <Image 
+            src="/logo.png" 
+            alt="Interface IQ" 
+            width={24} 
+            height={24} 
+            className="rounded-md opacity-90 invert grayscale brightness-200" 
+          />
+          <span className="text-sm font-bold text-muted-foreground tracking-tighter uppercase">Interface IQ</span>
         </div>
 
         {/* Center: Made with love */}

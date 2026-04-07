@@ -12,9 +12,15 @@ export async function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-14 items-center justify-between px-4">
-        <Link href="/" className="flex items-center space-x-2 shrink-0">
-          <Image src="/logo.png" alt="Interface IQ Logo" width={28} height={28} className="rounded-md" />
-          <span className="font-bold tracking-tight hidden sm:inline-block">Interface IQ</span>
+        <Link href="/" className="flex items-center space-x-2 shrink-0 group">
+          <Image 
+            src="/logo.png" 
+            alt="Interface IQ Logo" 
+            width={32} 
+            height={32} 
+            className="rounded-lg transition-all group-hover:scale-110 invert brightness-200" 
+          />
+          <span className="font-bold tracking-tighter text-xl hidden sm:inline-block">Interface IQ</span>
         </Link>
         <nav className="flex items-center space-x-1 sm:space-x-4">
           <Link href="/arena">
